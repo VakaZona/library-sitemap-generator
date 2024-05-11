@@ -2,14 +2,13 @@
 
 namespace src\DTO;
 
-
 use vakazona\Dto\Attributes\Required;
 use vakazona\Dto\DTO;
 
 class SitemapData extends DTO
 {
     #[Required]
-    public PagesData $pages;
+    public array $pages;
     #[Required]
     public string $fileType;
 

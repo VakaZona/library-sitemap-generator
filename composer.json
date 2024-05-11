@@ -1,5 +1,24 @@
 {
+    "name" : "vakazona/library-sitemap-generator",
+    "description": "Library for generate sitemap files 'xml, csv, json'",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "vakazona\\SitemapGenerator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Valery Zonov",
+            "email": "zonovvaleraooo@gmail.com"
+        }
+    ],
     "require": {
+        "php": "^8.2",
         "vakazona/dto": "^1.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.56"
     }
 }
