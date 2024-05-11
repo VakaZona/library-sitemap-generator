@@ -25,9 +25,9 @@ class SitemapGenerator
             case 'csv':
                 $this->generateCSVSitemap();
                 break;
-                //            case 'json':
-                //                $this->generateJSONSitemap();
-                //                break;
+            case 'json':
+                $this->generateJSONSitemap();
+                break;
         }
     }
 
@@ -61,7 +61,16 @@ class SitemapGenerator
         }
 
         fclose($fp);
+    }
 
+    private function generateJSONSitemap()
+    {
+        $filePath = $this->data->filePath;
+        $this->checkFile($filePath);
+
+        $jsonContent = json_encode($this->data->pages, JSON_PRETTY_PRINT);
+
+        file_put_contents($filePath, $jsonContent);
     }
 
     private function checkFile(string $filePath): void
