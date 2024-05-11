@@ -1,6 +1,6 @@
 <?php
 
-namespace vakazona\Exceptions;
+namespace vakazona\SitemapGenerator\Exceptions;
 
 use Exception;
 use Throwable;

@@ -1,6 +1,6 @@
 <?php
 
-namespace vakazona\DTO;
+namespace vakazona\SitemapGenerator\DTO;
 
 use vakazona\Dto\Attributes\Required;
 use vakazona\Dto\DTO;

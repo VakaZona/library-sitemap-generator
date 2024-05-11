@@ -2,8 +2,8 @@
 
 namespace vakazona\SitemapGenerator;
 
-use vakazona\DTO\SitemapData;
-use vakazona\Exceptions\InvalidSitemapDataException;
+use vakazona\SitemapGenerator\DTO\SitemapData;
+use vakazona\SitemapGenerator\Exceptions\InvalidSitemapDataException;
 
 class SitemapGenerator
 {
