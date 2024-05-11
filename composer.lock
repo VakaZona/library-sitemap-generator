@@ -1,0 +1,63 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e35870df33d8af536a3c6b7aba23bdb4",
+    "packages": [
+        {
+            "name": "vakazona/dto",
+            "version": "v1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VakaZona/DTO.git",
+                "reference": "383ea1e4e909e87d5c1810ef2611d04acd7858ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/VakaZona/DTO/zipball/383ea1e4e909e87d5c1810ef2611d04acd7858ec",
+                "reference": "383ea1e4e909e87d5c1810ef2611d04acd7858ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "vakazona\\Dto\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Valery Zonov",
+                    "email": "valery.zonov@sibers.com"
+                }
+            ],
+            "description": "A Data Transfer Object for PHP",
+            "support": {
+                "issues": "https://github.com/VakaZona/DTO/issues",
+                "source": "https://github.com/VakaZona/DTO/tree/v1.4"
+            },
+            "time": "2023-10-09T10:26:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
