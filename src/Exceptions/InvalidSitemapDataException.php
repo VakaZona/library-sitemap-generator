@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Exceptions;
+namespace vakazona\Exceptions;
 
 use Exception;
 use Throwable;

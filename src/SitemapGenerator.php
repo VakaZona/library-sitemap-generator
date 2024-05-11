@@ -1,9 +1,9 @@
 <?php
 
-namespace src;
+namespace vakazona\SitemapGenerator;
 
-use src\DTO\SitemapData;
-use src\Exceptions\InvalidSitemapDataException;
+use vakazona\DTO\SitemapData;
+use vakazona\Exceptions\InvalidSitemapDataException;
 
 class SitemapGenerator
 {

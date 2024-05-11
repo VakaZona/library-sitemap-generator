@@ -1,6 +1,6 @@
 <?php
 
-namespace src\DTO;
+namespace vakazona\DTO;
 
 use vakazona\Dto\Attributes\Required;
 use vakazona\Dto\DTO;
