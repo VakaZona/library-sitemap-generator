@@ -99,22 +99,38 @@ class SitemapGenerator
         $xmlDoc->save($filePath);
     }
 
-    private function checkFile(string $filePath): void
+    private function checkFile(string $filePath, string $fileType): void
     {
-        $parts = explode(DIRECTORY_SEPARATOR, $filePath);
-
-        array_pop($parts);
-
-        $directory = implode(DIRECTORY_SEPARATOR, $parts);
-
-        if (!file_exists($directory)) {
-            mkdir($directory, 0777, true);
+        if (!realpath($filePath)) {
+            throw new InvalidSitemapDataException("Invalid file path '{$filePath}'. Please provide absolute or relative path.");
         }
 
-        if (!file_exists($filePath)) {
-            touch($filePath);
+        $realPath = realpath($filePath);
+
+        $extension = match ($fileType) {
+            'xml' => 'xml',
+            'csv' => 'csv',
+            'json' => 'json',
+            default => throw new InvalidSitemapDataException("Invalid file type '{$fileType}'"),
+        };
+
+        $realPath = preg_replace('/\.[^.]+$/', '', $realPath);
+
+        $realPath .= '.' . $extension;
+
+        if (!is_writable(dirname($realPath))) {
+            throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
+        }
+
+        if (!file_exists(dirname($realPath))) {
+            mkdir(dirname($realPath), 0777, true);
+        }
+
+        if (!file_exists($realPath)) {
+            touch($realPath);
         }
     }
+
 
     private function validateFilePath(string $filePath)
     {
