@@ -34,6 +34,7 @@ class SitemapGenerator
     private function validateData(SitemapData $data)
     {
         $this->validateFileType($data->fileType);
+        $this->validateFilePath($data->filePath);
     }
 
     private function validateFileType(string $fileType)
@@ -41,11 +42,6 @@ class SitemapGenerator
         if (!(in_array($fileType, ['xml', 'csv', 'json']))) {
             throw new InvalidSitemapDataException("Invalid file type '{$fileType}'");
         }
-    }
-
-    private function validateFile()
-    {
-
     }
 
     private function generateCSVSitemap()
@@ -119,4 +115,16 @@ class SitemapGenerator
         }
     }
 
+    private function validateFilePath(string $filePath)
+    {
+        if (!realpath($filePath)) {
+            throw new InvalidSitemapDataException("Invalid file path '{$filePath}'. Please provide absolute or relative path.");
+        }
+
+        $realPath = realpath($filePath);
+
+        if (!is_writable(dirname($realPath))) {
+            throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
+        }
+    }
 }
