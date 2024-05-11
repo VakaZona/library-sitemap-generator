@@ -35,6 +35,7 @@ class SitemapGenerator
     {
         $this->validateFileType($data->fileType);
         $this->validateFilePath($data->filePath);
+        $this->validatePages($data->pages);
     }
 
     private function validateFileType(string $fileType)
@@ -127,4 +128,34 @@ class SitemapGenerator
             throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
         }
     }
+
+    private function validatePages(array $pages)
+    {
+        if (empty($pages)) {
+            throw new InvalidSitemapDataException("Empty page array. Please provide at least one page.");
+        }
+
+        foreach ($pages as $page) {
+            if (!isset($page['loc'], $page['lastmod'], $page['priority'], $page['changefreq'])) {
+                throw new InvalidSitemapDataException("Invalid page format. Each page must contain 'loc', 'lastmod', 'priority', and 'changefreq' keys.");
+            }
+
+            if (!filter_var($page['loc'], FILTER_VALIDATE_URL)) {
+                throw new InvalidSitemapDataException("Invalid 'loc' format. 'loc' must be a valid URL.");
+            }
+
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $page['lastmod'])) {
+                throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
+            }
+
+            if (!is_numeric($page['priority']) || $page['priority'] <= 0 || $page['priority'] > 1) {
+                throw new InvalidSitemapDataException("Invalid 'priority' value. 'priority' must be a float greater than 0 and less than or equal to 1.");
+            }
+
+            if (!in_array($page['changefreq'], ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'])) {
+                throw new InvalidSitemapDataException("Invalid 'changefreq' value. 'changefreq' must be one of the following: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'.");
+            }
+        }
+    }
+
 }
