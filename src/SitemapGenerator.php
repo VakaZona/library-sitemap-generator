@@ -102,16 +102,11 @@ class SitemapGenerator
     private function checkFile(string $filePath): void
     {
         $fileType = $this->data->fileType;
-        $extension = match ($fileType) {
-            'xml' => 'xml',
-            'csv' => 'csv',
-            'json' => 'json',
-            default => throw new InvalidSitemapDataException("Invalid file type '{$fileType}'"),
-        };
+
 
         $realPath = preg_replace('/\.[^.]+$/', '', $filePath);
 
-        $realPath .= '.' . $extension;
+        $realPath .= '.' . $fileType;
 
         if (!is_writable(dirname($realPath))) {
             throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
