@@ -101,7 +101,6 @@ class SitemapGenerator
 
     private function checkFile(string $filePath, string $fileType): void
     {
-
         $realPath = realpath($filePath);
 
         $extension = match ($fileType) {
@@ -131,10 +130,6 @@ class SitemapGenerator
 
     private function validateFilePath(string $filePath)
     {
-        if (preg_match('/[<>:"\/\\|?*\x00-\x1F]/', $filePath)) {
-            throw new InvalidSitemapDataException("Invalid characters in file path '{$filePath}'. Please provide a valid file path.");
-        }
-
         $realPath = realpath($filePath);
 
         if (!is_writable(dirname($realPath))) {
