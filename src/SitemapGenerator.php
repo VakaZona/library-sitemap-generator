@@ -124,11 +124,6 @@ class SitemapGenerator
 
     private function validateFilePath(string $filePath)
     {
-        $pathInfo = pathinfo($filePath);
-
-        if (!isset($pathInfo['extension']) || $pathInfo['extension'] !== $this->data->fileType) {
-            throw new InvalidSitemapDataException("Extension of the file '{$filePath}' does not match the specified file type '{$this->data->fileType}'.");
-        }
 
         if (!is_writable(dirname($filePath))) {
             throw new InvalidSitemapDataException("Directory '{$filePath}' is not writable.");
