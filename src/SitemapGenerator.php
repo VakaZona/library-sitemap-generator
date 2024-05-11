@@ -99,9 +99,9 @@ class SitemapGenerator
         $xmlDoc->save($filePath);
     }
 
-    private function checkFile(string $filePath, string $fileType): void
+    private function checkFile(string $filePath): void
     {
-
+        $fileType = $this->data->fileType;
         $extension = match ($fileType) {
             'xml' => 'xml',
             'csv' => 'csv',
