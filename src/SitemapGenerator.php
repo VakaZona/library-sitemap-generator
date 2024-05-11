@@ -101,9 +101,10 @@ class SitemapGenerator
 
     private function checkFile(string $filePath, string $fileType): void
     {
-        if (!realpath($filePath)) {
-            throw new InvalidSitemapDataException("Invalid file path '{$filePath}'. Please provide absolute or relative path.");
+        if (preg_match('/[<>:"\/\\|?*\x00-\x1F]/', $filePath)) {
+            throw new InvalidSitemapDataException("Invalid characters in file path '{$filePath}'. Please provide a valid file path.");
         }
+
 
         $realPath = realpath($filePath);
 
