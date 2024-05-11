@@ -101,7 +101,6 @@ class SitemapGenerator
 
     private function checkFile(string $filePath, string $fileType): void
     {
-        $realPath = realpath($filePath);
 
         $extension = match ($fileType) {
             'xml' => 'xml',
@@ -110,7 +109,7 @@ class SitemapGenerator
             default => throw new InvalidSitemapDataException("Invalid file type '{$fileType}'"),
         };
 
-        $realPath = preg_replace('/\.[^.]+$/', '', $realPath);
+        $realPath = preg_replace('/\.[^.]+$/', '', $filePath);
 
         $realPath .= '.' . $extension;
 
@@ -130,10 +129,9 @@ class SitemapGenerator
 
     private function validateFilePath(string $filePath)
     {
-        $realPath = realpath($filePath);
 
-        if (!is_writable(dirname($realPath))) {
-            throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
+        if (!is_writable(dirname($filePath))) {
+            throw new InvalidSitemapDataException("Directory '{$filePath}' is not writable.");
         }
     }
 
