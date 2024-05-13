@@ -33,9 +33,19 @@ class SitemapGenerator
 
     private function validateData(SitemapData $data)
     {
+        $this->checkExtensions($data->fileType, $data->filePath);
         $this->validateFileType($data->fileType);
         $this->validateFilePath($data->filePath);
         $this->validatePages($data->pages);
+    }
+
+    private function checkExtensions(string $fileType, string $filePath)
+    {
+        $parts = explode(".", $filePath);
+        $extension = end($parts);
+        if ($fileType != $extension) {
+            throw new InvalidSitemapDataException("Invalid file type and file path extension '{$filePath}, {$fileType}'");
+        }
     }
 
     private function validateFileType(string $fileType)
