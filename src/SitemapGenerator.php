@@ -35,15 +35,16 @@ class SitemapGenerator
     {
         $this->checkExtensions($data->fileType, $data->filePath);
         $this->validateFileType($data->fileType);
-        $this->validateFilePath($data->filePath);
+
         $this->validatePages($data->pages);
+        $this->validateFilePath($data->filePath);
     }
 
     private function checkExtensions(string $fileType, string $filePath)
     {
         $parts = explode(".", $filePath);
         $extension = end($parts);
-        if ($fileType != $extension) {
+        if ($fileType !== $extension) {
             throw new InvalidSitemapDataException("Invalid file type and file path extension '{$filePath}, {$fileType}'");
         }
     }
@@ -58,7 +59,6 @@ class SitemapGenerator
     private function generateCSVSitemap()
     {
         $filePath = $this->data->filePath;
-        $this->checkFile($filePath);
         $fp = fopen($filePath, 'w');
 
         fputcsv($fp, ['loc', 'lastmod', 'priority', 'changefreq'], ';');
@@ -73,7 +73,6 @@ class SitemapGenerator
     private function generateJSONSitemap()
     {
         $filePath = $this->data->filePath;
-        $this->checkFile($filePath);
 
         $jsonContent = json_encode($this->data->pages, JSON_PRETTY_PRINT);
 
@@ -83,7 +82,6 @@ class SitemapGenerator
     private function generateXMLSitemap()
     {
         $filePath = $this->data->filePath;
-        $this->checkFile($filePath);
 
         $xmlDoc = new \DOMDocument('1.0', 'UTF-8');
 
@@ -109,31 +107,16 @@ class SitemapGenerator
         $xmlDoc->save($filePath);
     }
 
-    private function checkFile(string $filePath): void
-    {
-        $fileType = $this->data->fileType;
-
-
-        $realPath = preg_replace('/\.[^.]+$/', '', $filePath);
-
-        $realPath .= '.' . $fileType;
-
-        if (!is_writable(dirname($realPath))) {
-            throw new InvalidSitemapDataException("Directory '{$realPath}' is not writable.");
-        }
-
-        if (!file_exists(dirname($realPath))) {
-            mkdir(dirname($realPath), 0777, true);
-        }
-
-        if (!file_exists($realPath)) {
-            touch($realPath);
-        }
-    }
-
 
     private function validateFilePath(string $filePath)
     {
+        if (!file_exists(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);
+        }
+
+        if (!file_exists($filePath)) {
+            touch($filePath);
+        }
 
         if (!is_writable(dirname($filePath))) {
             throw new InvalidSitemapDataException("Directory '{$filePath}' is not writable.");
