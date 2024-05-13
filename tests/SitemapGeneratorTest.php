@@ -56,7 +56,7 @@ class SitemapGeneratorTest extends TestCase
         $generator = new SitemapGenerator($sitemapData);
     }
 
-    public function testConstructorWithInvalidDataPages()
+    public function testConstructorWithInvalidDataPagesNoLoc()
     {
         $this->expectException(InvalidSitemapDataException::class);
 
@@ -64,6 +64,42 @@ class SitemapGeneratorTest extends TestCase
             'pages' => [['lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'txt',
             'filePath' => __DIR__.'?test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataPagesInvalidLastmod()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => 'test', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataPagesInvalidPriority()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2000-01-01', 'priority' => 1.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataPagesInvalidChangeFreq()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2000-01-01', 'priority' => 1.0, 'changefreq' => 'mail']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
         ]);
         $generator = new SitemapGenerator($sitemapData);
     }
