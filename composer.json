@@ -19,6 +19,7 @@
         "vakazona/dto": "^1.4"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.56"
+        "friendsofphp/php-cs-fixer": "^3.56",
+        "phpunit/phpunit": "^11.1"
     }
 }
