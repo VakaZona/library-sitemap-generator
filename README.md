@@ -20,15 +20,15 @@ $pages = [
             ['loc' => 'https://example.com/page2', 'lastmod' => '2024-05-10', 'priority' => 0.5, 'changefreq' => 'weekly']
         ];
 
-        $fileType = 'xml';
-        $filePath = storage_path('/app/upload/sitemap.xml');
+$fileType = 'xml';
+$filePath = storage_path('/app/upload/sitemap.xml');
 
-        $sitemapGenerator = new SitemapGenerator(new SitemapData([
+$sitemapGenerator = new SitemapGenerator(new SitemapData([
             'pages' => $pages,
             'fileType' => $fileType,
             'filePath' => $filePath
         ]));
-        $sitemapGenerator->generateSitemap();
+$sitemapGenerator->generateSitemap();
 ```
 
 ## Tests
