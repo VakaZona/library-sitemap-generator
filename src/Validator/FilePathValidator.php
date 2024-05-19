@@ -42,8 +42,6 @@ class FilePathValidator implements ValidatorInterface
         $absoluteSourceDirectory = realpath(__DIR__);
 
         if (strpos($absoluteFilePath, $absoluteSourceDirectory) !==0) {
-            var_dump($absoluteFilePath);
-            var_dump($absoluteSourceDirectory);
             throw new InvalidFilePathException();
         }
     }
