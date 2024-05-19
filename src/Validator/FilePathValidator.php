@@ -26,10 +26,10 @@ class FilePathValidator implements ValidatorInterface
      */
     private function validateFilePath(string $filePath): void
     {
-        $this->ensureWorkDir($filePath);
         $this->ensureDirectoryExists($filePath);
         $this->ensureFileExists($filePath);
         $this->ensureDirectoryIsWritable($filePath);
+        $this->ensureWorkDir($filePath);
     }
 
 
