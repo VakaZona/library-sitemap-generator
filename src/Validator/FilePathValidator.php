@@ -26,7 +26,6 @@ class FilePathValidator implements ValidatorInterface
      */
     private function validateFilePath(string $filePath): void
     {
-        $this->ensureValidFilePath($filePath);
         $this->ensureWorkDir($filePath);
         $this->ensureDirectoryExists($filePath);
         $this->ensureFileExists($filePath);
@@ -79,13 +78,6 @@ class FilePathValidator implements ValidatorInterface
 
         if (!is_writable($directory)) {
             throw new InvalidFilePathException("Directory '$directory' is not writable.");
-        }
-    }
-
-    private function ensureValidFilePath(string $filePath): void
-    {
-        if (preg_match('/[\/\\:*?"<>|]/', $filePath)) {
-            throw new InvalidFilePathException("Invalid file path: '$filePath'.");
         }
     }
 }
