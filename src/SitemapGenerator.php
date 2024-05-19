@@ -129,11 +129,20 @@ class SitemapGenerator
             throw new InvalidSitemapDataException("Empty page array. Please provide at least one page.");
         }
 
+
         if (count($pages) > 10) {
             throw new InvalidSitemapDataException("The number of pages is too large, please specify no more than 10 lines");
         }
 
         foreach ($pages as $page) {
+            $arrayKeys = array_keys($page);
+            $expectedKeys = ['loc', 'lastmod', 'priority', 'changefreq'];
+            sort($expectedKeys);
+            sort($arrayKeys);
+
+            if ($arrayKeys !== $expectedKeys) {
+                throw new InvalidSitemapDataException("Invalid strings in pages.");
+            }
             if (!isset($page['loc'], $page['lastmod'], $page['priority'], $page['changefreq'])) {
                 throw new InvalidSitemapDataException("Invalid page format. Each page must contain 'loc', 'lastmod', 'priority', and 'changefreq' keys.");
             }
@@ -163,15 +172,15 @@ class SitemapGenerator
         [$year, $month, $day] = explode('-', $dateString);
 
         $currentYear = date('Y');
-        if ($year<2000 || $year > $currentYear) {
+        if ($year < 2000 || $year > $currentYear) {
             throw new InvalidSitemapDataException("Invalid 'lastmod' year '{$year}'. (2000<YEAR<{$currentYear})");
         }
 
-        if ($month<1 || $month>12) {
+        if ($month < 1 || $month > 12) {
             throw new InvalidSitemapDataException("Invalid 'lastmod' month '{$month}'");
         }
 
-        if ($day<1||$day>31){
+        if ($day < 1 || $day > 31) {
             throw new InvalidSitemapDataException("Invalid 'lastmod' day '{$day}'");
         }
 

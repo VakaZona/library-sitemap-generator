@@ -189,4 +189,17 @@ class SitemapGeneratorTest extends TestCase
         $generator = new SitemapGenerator($sitemapData);
     }
 
+
+    public function testConstructorWithInvalidDataPages()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2005-02-23', 'priority' => 0.5, 'changefreq' => 'daily', 'test' => 'test']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
 }
