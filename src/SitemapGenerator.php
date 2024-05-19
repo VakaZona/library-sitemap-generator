@@ -138,9 +138,11 @@ class SitemapGenerator
                 throw new InvalidSitemapDataException("Invalid 'loc' format. 'loc' must be a valid URL.");
             }
 
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $page['lastmod'])) {
-                throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
-            }
+//            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $page['lastmod'])) {
+//                throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
+//            }
+
+            $this->validateDateString($page['lastmod']);
 
             if (!is_numeric($page['priority']) || $page['priority'] <= 0 || $page['priority'] > 1) {
                 throw new InvalidSitemapDataException("Invalid 'priority' value. 'priority' must be a float greater than 0 and less than or equal to 1.");
@@ -150,6 +152,34 @@ class SitemapGenerator
                 throw new InvalidSitemapDataException("Invalid 'changefreq' value. 'changefreq' must be one of the following: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'.");
             }
         }
+    }
+
+    private function validateDateString(string $dateString): bool
+    {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateString)) {
+            throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
+        }
+
+        [$year, $month, $day] = explode('-', $dateString);
+
+        $currentYear = date('Y');
+        if ($year<2000 || $year > $currentYear) {
+            throw new InvalidSitemapDataException("Invalid 'lastmod' year '{$year}'. (2000<YEAR<{$currentYear})");
+        }
+
+        if ($month<1 || $month>12) {
+            throw new InvalidSitemapDataException("Invalid 'lastmod' month '{$month}'");
+        }
+
+        if ($day<1||$day>31){
+            throw new InvalidSitemapDataException("Invalid 'lastmod' day '{$day}'");
+        }
+
+        if (!checkdate((int)$month, (int)$day, (int)$year)) {
+            throw new InvalidSitemapDataException("Invalid 'lastmod' date '{$dateString}'");
+        }
+
+        return true;
     }
 
 }

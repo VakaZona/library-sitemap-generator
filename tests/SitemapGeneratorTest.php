@@ -117,4 +117,53 @@ class SitemapGeneratorTest extends TestCase
     }
 
 
+    public function testConstructorWithInvalidDataLastmodYear()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '1990-12-01', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataLastmodMonth()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2005-20-01', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataLastmodDay()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2005-01-65', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+    public function testConstructorWithInvalidDataLastmod()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2005-02-31', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
+    }
+
+
 }
