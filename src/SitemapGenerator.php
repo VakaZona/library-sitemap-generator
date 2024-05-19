@@ -129,6 +129,10 @@ class SitemapGenerator
             throw new InvalidSitemapDataException("Empty page array. Please provide at least one page.");
         }
 
+        if (count($pages) > 10) {
+            throw new InvalidSitemapDataException("The number of pages is too large, please specify no more than 10 lines");
+        }
+
         foreach ($pages as $page) {
             if (!isset($page['loc'], $page['lastmod'], $page['priority'], $page['changefreq'])) {
                 throw new InvalidSitemapDataException("Invalid page format. Each page must contain 'loc', 'lastmod', 'priority', and 'changefreq' keys.");
@@ -137,10 +141,6 @@ class SitemapGenerator
             if (!filter_var($page['loc'], FILTER_VALIDATE_URL)) {
                 throw new InvalidSitemapDataException("Invalid 'loc' format. 'loc' must be a valid URL.");
             }
-
-//            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $page['lastmod'])) {
-//                throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
-//            }
 
             $this->validateDateString($page['lastmod']);
 
