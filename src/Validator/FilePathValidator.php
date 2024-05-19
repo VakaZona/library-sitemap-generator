@@ -26,10 +26,10 @@ class FilePathValidator implements ValidatorInterface
      */
     private function validateFilePath(string $filePath): void
     {
+        $this->ensureWorkDir($filePath);
         $this->ensureDirectoryExists($filePath);
         $this->ensureFileExists($filePath);
         $this->ensureDirectoryIsWritable($filePath);
-        $this->ensureWorkDir($filePath);
     }
 
 
@@ -41,7 +41,9 @@ class FilePathValidator implements ValidatorInterface
         $absoluteFilePath = realpath($filePath);
         $absoluteSourceDirectory = realpath(__DIR__);
 
-        if ($absoluteFilePath === false || $absoluteSourceDirectory === false) {
+        if (strpos($absoluteFilePath, $absoluteSourceDirectory) !==0) {
+            var_dump($absoluteFilePath);
+            var_dump($absoluteSourceDirectory);
             throw new InvalidFilePathException();
         }
     }

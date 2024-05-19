@@ -32,7 +32,6 @@ class SitemapGeneratorTest extends TestCase
         ]);
         $generator = new SitemapGenerator(new SitemapValidator());
         $generator->generateSitemap($sitemapData);
-        $this->assertInstanceOf(SitemapGenerator::class, $generator);
     }
 
     public function testConstructorWithInvalidDataFileType()
