@@ -2,57 +2,63 @@
 
 use PHPUnit\Framework\TestCase;
 use vakazona\SitemapGenerator\DTO\SitemapData;
+use vakazona\SitemapGenerator\Exceptions\InvalidFileExtensionException;
+use vakazona\SitemapGenerator\Exceptions\InvalidFilePathException;
 use vakazona\SitemapGenerator\Exceptions\InvalidSitemapDataException;
 use vakazona\SitemapGenerator\SitemapGenerator;
+use vakazona\SitemapGenerator\Validator\SitemapValidator;
 
 class SitemapGeneratorTest extends TestCase
 {
     public function testConstructorWithValidData()
     {
-
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'csv',
             'filePath' => __DIR__.'/../test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
 
         $this->assertInstanceOf(SitemapGenerator::class, $generator);
     }
 
     public function testConstructorWithInvalidDataRealPath()
     {
-        $this->expectException(InvalidSitemapDataException::class);
+        $this->expectException(InvalidFilePathException::class);
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'csv',
             'filePath' => __DIR__.'/../../../test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
+        $this->assertInstanceOf(SitemapGenerator::class, $generator);
     }
 
     public function testConstructorWithInvalidDataFileType()
     {
-        $this->expectException(InvalidSitemapDataException::class);
+        $this->expectException(InvalidFileExtensionException::class);
 
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'txt',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataFilePath()
     {
-        $this->expectException(InvalidSitemapDataException::class);
+        $this->expectException(InvalidFilePathException::class);
 
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
-            'fileType' => 'txt',
+            'fileType' => 'csv',
             'filePath' => __DIR__.'?test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataEmptyPages()
@@ -61,10 +67,11 @@ class SitemapGeneratorTest extends TestCase
 
         $sitemapData = new SitemapData([
             'pages' => [],
-            'fileType' => 'txt',
-            'filePath' => __DIR__.'?test.csv',
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataPagesNoLoc()
@@ -73,10 +80,11 @@ class SitemapGeneratorTest extends TestCase
 
         $sitemapData = new SitemapData([
             'pages' => [['lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
-            'fileType' => 'txt',
-            'filePath' => __DIR__.'?test.csv',
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataPagesInvalidLastmod()
@@ -88,7 +96,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataPagesInvalidPriority()
@@ -100,7 +109,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataPagesInvalidChangeFreq()
@@ -112,19 +122,21 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataFileTypeAndFilePath()
     {
-        $this->expectException(InvalidSitemapDataException::class);
+        $this->expectException(InvalidFileExtensionException::class);
 
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.json',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
 
@@ -137,7 +149,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataLastmodMonth()
@@ -149,7 +162,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataLastmodDay()
@@ -161,7 +175,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidDataLastmod()
@@ -173,7 +188,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
     public function testConstructorWithInvalidPagesCount()
@@ -197,7 +213,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
 
@@ -210,7 +227,8 @@ class SitemapGeneratorTest extends TestCase
             'fileType' => 'csv',
             'filePath' => __DIR__.'/test.csv',
         ]);
-        $generator = new SitemapGenerator($sitemapData);
+        $generator = new SitemapGenerator(new SitemapValidator());
+        $generator->generateSitemap($sitemapData);
     }
 
 }
