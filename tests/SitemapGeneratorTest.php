@@ -13,11 +13,22 @@ class SitemapGeneratorTest extends TestCase
         $sitemapData = new SitemapData([
             'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
             'fileType' => 'csv',
-            'filePath' => __DIR__.'/test.csv',
+            'filePath' => __DIR__.'/../test.csv',
         ]);
         $generator = new SitemapGenerator($sitemapData);
 
         $this->assertInstanceOf(SitemapGenerator::class, $generator);
+    }
+
+    public function testConstructorWithInvalidDataRealPath()
+    {
+        $this->expectException(InvalidSitemapDataException::class);
+        $sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/../../../test.csv',
+        ]);
+        $generator = new SitemapGenerator($sitemapData);
     }
 
     public function testConstructorWithInvalidDataFileType()

@@ -110,6 +110,13 @@ class SitemapGenerator
 
     private function validateFilePath(string $filePath)
     {
+        $absoluteFilePath = realpath($filePath);
+        $absoluteSourceDirectory = realpath(__DIR__);
+
+        if ($absoluteFilePath === false || $absoluteSourceDirectory === false) {
+            throw new InvalidSitemapDataException("Failed to resolve file paths.");
+        }
+
         if (!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0777, true);
         }
