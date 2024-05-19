@@ -26,6 +26,7 @@ class FilePathValidator implements ValidatorInterface
      */
     private function validateFilePath(string $filePath): void
     {
+        $this->ensureValidFilePath($filePath);
         $this->ensureWorkDir($filePath);
         $this->ensureDirectoryExists($filePath);
         $this->ensureFileExists($filePath);
@@ -38,11 +39,8 @@ class FilePathValidator implements ValidatorInterface
      */
     private function ensureWorkDir(string $filePath): void
     {
-        $absoluteFilePath = realpath($filePath);
-        $absoluteSourceDirectory = realpath(__DIR__);
-
-        if (strpos($absoluteFilePath, $absoluteSourceDirectory) !==0) {
-            throw new InvalidFilePathException();
+        if (strpos($filePath, '../') !== false || strpos($filePath, './') !== false) {
+            throw new InvalidFilePathException("Relative path not allowed: '$filePath'.");
         }
     }
 
@@ -81,6 +79,13 @@ class FilePathValidator implements ValidatorInterface
 
         if (!is_writable($directory)) {
             throw new InvalidFilePathException("Directory '$directory' is not writable.");
+        }
+    }
+
+    private function ensureValidFilePath(string $filePath): void
+    {
+        if (!filter_var($filePath, FILTER_VALIDATE_URL)) {
+            throw new InvalidFilePathException("Invalid file path: '$filePath'.");
         }
     }
 }
