@@ -84,7 +84,7 @@ class FilePathValidator implements ValidatorInterface
 
     private function ensureValidFilePath(string $filePath): void
     {
-        if (!filter_var($filePath, FILTER_VALIDATE_URL)) {
+        if (preg_match('/[\/\\:*?"<>|]/', $filePath)) {
             throw new InvalidFilePathException("Invalid file path: '$filePath'.");
         }
     }
