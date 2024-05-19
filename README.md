@@ -23,12 +23,24 @@ $pages = [
 $fileType = 'xml';
 $filePath = storage_path('/app/upload/sitemap.xml');
 
-$sitemapGenerator = new SitemapGenerator(new SitemapData([
-            'pages' => $pages,
-            'fileType' => $fileType,
-            'filePath' => $filePath
-        ]));
-$sitemapGenerator->generateSitemap();
+$sitemapGenerator = new SitemapGenerator(new SitemapValidator()));
+$sitemapGenerator->generateSitemap(new SitemapData([
+    'pages' => $pages,
+    'fileType' => $fileType,
+    'filePath' => $filePath,
+]));
+
+//OR
+
+$sitemapData = new SitemapData([
+            'pages' => [['loc' => 'https://example.com', 'lastmod' => '2022-01-01', 'priority' => 0.5, 'changefreq' => 'daily']],
+            'fileType' => 'csv',
+            'filePath' => __DIR__.'/test.csv',
+        ]);
+$sitemapData->fileType = 'json';
+$sitemapData->filePath = __DIR__.'/test.json';
+$generator = new SitemapGenerator(new SitemapValidator());
+$generator->generateSitemap($sitemapData);
 ```
 
 ## Tests
