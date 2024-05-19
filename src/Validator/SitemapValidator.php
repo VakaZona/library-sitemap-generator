@@ -6,7 +6,6 @@ use vakazona\SitemapGenerator\DTO\SitemapData;
 
 class SitemapValidator implements SitemapValidatorInterface
 {
-
     private $validators = [];
 
     public function __construct()

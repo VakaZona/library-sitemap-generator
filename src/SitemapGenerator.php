@@ -3,8 +3,6 @@
 namespace vakazona\SitemapGenerator;
 
 use vakazona\SitemapGenerator\DTO\SitemapData;
-use vakazona\SitemapGenerator\Exceptions\InvalidSitemapDataException;
-use vakazona\SitemapGenerator\Validator\SitemapValidator;
 use vakazona\SitemapGenerator\Validator\SitemapValidatorInterface;
 
 class SitemapGenerator
@@ -33,31 +31,6 @@ class SitemapGenerator
                 break;
         }
     }
-
-//    private function validateData(SitemapData $data)
-//    {
-//        $this->checkExtensions($data->fileType, $data->filePath);
-//        $this->validateFileType($data->fileType);
-//
-//        $this->validatePages($data->pages);
-//        $this->validateFilePath($data->filePath);
-//    }
-
-//    private function checkExtensions(string $fileType, string $filePath)
-//    {
-//        $parts = explode(".", $filePath);
-//        $extension = end($parts);
-//        if ($fileType !== $extension) {
-//            throw new InvalidSitemapDataException("Invalid file type and file path extension '{$filePath}, {$fileType}'");
-//        }
-//    }
-
-//    private function validateFileType(string $fileType)
-//    {
-//        if (!(in_array($fileType, ['xml', 'csv', 'json']))) {
-//            throw new InvalidSitemapDataException("Invalid file type '{$fileType}'");
-//        }
-//    }
 
     private function generateCSVSitemap()
     {
@@ -109,96 +82,5 @@ class SitemapGenerator
         $xmlDoc->formatOutput = true;
         $xmlDoc->save($filePath);
     }
-
-
-//    private function validateFilePath(string $filePath)
-//    {
-//        $absoluteFilePath = realpath($filePath);
-//        $absoluteSourceDirectory = realpath(__DIR__);
-//
-//        if ($absoluteFilePath === false || $absoluteSourceDirectory === false) {
-//            throw new InvalidSitemapDataException("Failed to resolve file paths.");
-//        }
-//
-//        if (!file_exists(dirname($filePath))) {
-//            mkdir(dirname($filePath), 0777, true);
-//        }
-//
-//        if (!file_exists($filePath)) {
-//            touch($filePath);
-//        }
-//
-//        if (!is_writable(dirname($filePath))) {
-//            throw new InvalidSitemapDataException("Directory '{$filePath}' is not writable.");
-//        }
-//    }
-
-//    private function validatePages(array $pages)
-//    {
-//        if (empty($pages)) {
-//            throw new InvalidSitemapDataException("Empty page array. Please provide at least one page.");
-//        }
-//
-//
-//        if (count($pages) > 10) {
-//            throw new InvalidSitemapDataException("The number of pages is too large, please specify no more than 10 lines");
-//        }
-//
-//        foreach ($pages as $page) {
-//            $arrayKeys = array_keys($page);
-//            $expectedKeys = ['loc', 'lastmod', 'priority', 'changefreq'];
-//            sort($expectedKeys);
-//            sort($arrayKeys);
-//
-//            if ($arrayKeys !== $expectedKeys) {
-//                throw new InvalidSitemapDataException("Invalid strings in pages.");
-//            }
-//            if (!isset($page['loc'], $page['lastmod'], $page['priority'], $page['changefreq'])) {
-//                throw new InvalidSitemapDataException("Invalid page format. Each page must contain 'loc', 'lastmod', 'priority', and 'changefreq' keys.");
-//            }
-//
-//            if (!filter_var($page['loc'], FILTER_VALIDATE_URL)) {
-//                throw new InvalidSitemapDataException("Invalid 'loc' format. 'loc' must be a valid URL.");
-//            }
-//
-//            $this->validateDateString($page['lastmod']);
-//
-//            if (!is_numeric($page['priority']) || $page['priority'] <= 0 || $page['priority'] > 1) {
-//                throw new InvalidSitemapDataException("Invalid 'priority' value. 'priority' must be a float greater than 0 and less than or equal to 1.");
-//            }
-//
-//            if (!in_array($page['changefreq'], ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'])) {
-//                throw new InvalidSitemapDataException("Invalid 'changefreq' value. 'changefreq' must be one of the following: 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'.");
-//            }
-//        }
-//    }
-
-//    private function validateDateString(string $dateString): bool
-//    {
-//        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateString)) {
-//            throw new InvalidSitemapDataException("Invalid 'lastmod' format. 'lastmod' must be in format 'YYYY-MM-DD'.");
-//        }
-//
-//        [$year, $month, $day] = explode('-', $dateString);
-//
-//        $currentYear = date('Y');
-//        if ($year < 2000 || $year > $currentYear) {
-//            throw new InvalidSitemapDataException("Invalid 'lastmod' year '{$year}'. (2000<YEAR<{$currentYear})");
-//        }
-//
-//        if ($month < 1 || $month > 12) {
-//            throw new InvalidSitemapDataException("Invalid 'lastmod' month '{$month}'");
-//        }
-//
-//        if ($day < 1 || $day > 31) {
-//            throw new InvalidSitemapDataException("Invalid 'lastmod' day '{$day}'");
-//        }
-//
-//        if (!checkdate((int)$month, (int)$day, (int)$year)) {
-//            throw new InvalidSitemapDataException("Invalid 'lastmod' date '{$dateString}'");
-//        }
-//
-//        return true;
-//    }
 
 }
